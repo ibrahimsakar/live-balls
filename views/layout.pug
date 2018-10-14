@@ -6,9 +6,11 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     title Live Balls
     link(rel='stylesheet', href='semantic/dist/semantic.min.css')
-  body
+  body(ng-app="app")
     block content
 
 
     block javascripts
       script(src="/angular/angular.min.js")
+      script(src="/javascripts/main.js")
+      script(src="/javascripts/indexController.js")
