@@ -7,37 +7,23 @@ block content
           .ui.stacked.segment.gameArea
             .circle.blue(style='left:150px; top:100px')
               .relative
-                span.name Mehmet
+                span.name İbrahim
                 .message Selam
             .circle.green(style='left:300px; top:100px')
               .relative
-                span.name Alp
+                span.name Ozan
                 .message selam nasılsın :)
             .circle.red(style='left:350px; top:300px')
               .relative
-                span.name Joe
+                span.name Mert
                 .message this is awesome
           .ui.items.chat
-            .item
-              .content
-                a.header.name Mehmet
+            .item(ng-repeat="message in messages")
+              .content(ng-if="!message.type")
+                span [SERVER] &nbsp;
+                a.header.name {{message.username}} &nbsp;
                 .description.message
-                  | Selam
-            .item
-              .content
-                a.header.name Alp
-                .description.message
-                  | selam nasılsın :)
-            .item
-              .content
-                a.header.name Joe
-                .description.message
-                  | this is awesome
-            .item
-              .content
-                a.header.name Sinang
-                .description.message
-                  | hey
+                  | katıldı
           .ui.action.input.fluid
             input(type='text', placeholder='Type here...')
             button.ui.button Send
