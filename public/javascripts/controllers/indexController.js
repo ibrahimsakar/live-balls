@@ -37,6 +37,7 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                 };
 
                 $scope.messages.push(messageData);
+                $scope.players[data.id] = data;
                 $scope.$apply();
             });
 
