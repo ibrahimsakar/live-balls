@@ -44,7 +44,10 @@ io.on('connection', (socket) => {
             x: data.x,
             y: data.y
         });
+    });
 
+    socket.on('newMessage', (data) => {
+        socket.broadcast.emit('newMessage', data);
     });
 });
 
