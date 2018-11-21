@@ -27,14 +27,16 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
         }, 2000);
     }
 
-    initSocket = (username) => {
+    async function initSocket(username){
         const connectionOptions = {
             reconnectionAttempts: 3,
             reconnectionDelay: 600
         };
         
-        indexFactory.connectSocket('http://localhost:3000', connectionOptions)
-        .then((socket) => {
+        try{
+
+            const socket = await indexFactory.connectSocket('http://localhost:3000', connectionOptions);
+            
             socket.emit('newUser', {username});
 
             socket.on('initPlayers', (players) => {
@@ -53,21 +55,24 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
 
                 $scope.messages.push(messageData);
                 $scope.players[data.id] = data;
+                scrollDown();
                 $scope.$apply();
             });
 
-            socket.on('disconnectUser', (data) => {
-                const messageData = {
-                    type: {
-                        code: 0,
-                        message: 0
-                    },
-                    username: data.username
-                };
+            socket.on('disUser', (data) => {
+				const messageData = {
+					type: {
+						code: 0,
+						message: 0
+					}, // info
+					username: data.username
+				};
 
-                $scope.messages.push(messageData);
-                $scope.$apply();
-            });
+				$scope.messages.push(messageData);
+				delete $scope.players[data.id];
+				scrollTop();
+				$scope.$apply();
+			});
 
             socket.on('animate', (data) => {
                 $('#' + data.socketId).animate({'left': data.x, 'top': data.y}, () => {
@@ -112,10 +117,9 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                 socket.emit('newMessage', messageData);
                 showBubble(socket.id, message);
                 scrollDown();
-            }
-        })
-        .catch((err) => {
+            };
+        } catch(err) {
             console.log(err);
-        });
+        }
     }
 }])
