@@ -54,9 +54,19 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
                 $scope.$apply();
             });
 
+            socket.on('animate', (data) => {
+                $('#' + data.socketId).animate({'left': data.x, 'top': data.y}, () => {
+                    animate = false;
+                });
+            });
+
             let animate = false;
             $scope.onClickPlayer = ($event) => {
                 if(!animate){
+                    let x = $event.offsetX;
+                    let y = $event.offsetY;
+
+                    socket.emit('animate', {x, y});
                     animate = true;
                     $('#' + socket.id).animate({'left': $event.offsetX, 'top': $event.offsetY}, () => {
                         animate = false;

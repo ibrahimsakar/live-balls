@@ -29,6 +29,18 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('disconnectUser', users[socket.id]);
         delete users[socket.id];
     });
+
+    socket.on('animate', (data) => {
+        users[socket.id].position.x = data.x;
+        users[socket.id].position.y = data.y;
+
+        socket.broadcast.emit('animate', {
+            socketId: socket.id,
+            x: data.x,
+            y: data.y
+        });
+
+    });
 });
 
 module.exports = socketApi;
