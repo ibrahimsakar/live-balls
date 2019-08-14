@@ -1,2 +1,2 @@
 # socketio-live-balls
-Socket.IO Live Balls
+Basic app with Node.js and Socket.IO
