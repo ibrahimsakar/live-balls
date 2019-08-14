@@ -1,7 +1,5 @@
-const colors = ['blue', 'red', 'green'];
+const colors = [ 'blue', 'red', 'green' ];
 
-const randomColor = () => {
-    return colors[Math.floor(Math.random() * colors.length)];
-};
+const randomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
 module.exports = randomColor;

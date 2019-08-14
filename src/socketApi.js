@@ -1,12 +1,14 @@
 const socketio = require('socket.io');
+
 const io = socketio();
 
 const socketApi = { };
+
 socketApi.io = io;
 
 const users = { };
 
-//helpers
+// helpers
 
 const randomColor = require('../helpers/randomColor');
 
@@ -18,12 +20,13 @@ io.on('connection', (socket) => {
             id: socket.id,
             position: {
                 x: 0,
-                y: 0
+                y: 0,
             },
-            color: randomColor()
-        }
+            color: randomColor(),
+        };
 
         const userData = Object.assign(data, defaultData);
+
         users[socket.id] = userData;
 
         socket.broadcast.emit('newUser', users[socket.id]);
@@ -31,27 +34,29 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-		socket.broadcast.emit('disUser', users[socket.id]);
-		delete users[socket.id];
-	});
+        socket.broadcast.emit('disUser', users[socket.id]);
+        delete users[socket.id];
+    });
 
     socket.on('animate', (data) => {
-        try{
+        try {
             users[socket.id].position.x = data.x;
             users[socket.id].position.y = data.y;
 
             socket.broadcast.emit('animate', {
                 socketId: socket.id,
                 x: data.x,
-                y: data.y
+                y: data.y,
             });
-        } catch(e){
+        }
+        catch (e) {
             console.log(e);
         }
     });
 
     socket.on('newMessage', (data) => {
-        const messageData = Object.assign({socketId: socket.id}, data);
+        const messageData = { socketId: socket.id, ...data };
+
         socket.broadcast.emit('newMessage', messageData);
     });
 });
